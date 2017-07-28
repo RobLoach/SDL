@@ -1056,7 +1056,7 @@ SDL_RenderTargetSupported(SDL_Renderer *renderer)
     if (!renderer || !renderer->SetRenderTarget) {
         return SDL_FALSE;
     }
-    return (renderer->info.flags & SDL_RENDERER_TARGETTEXTURE) != 0;
+    return (SDL_bool)((renderer->info.flags & SDL_RENDERER_TARGETTEXTURE) != 0);
 }
 
 int

@@ -104,9 +104,9 @@ SDL_BlitCopy(SDL_BlitInfo * info)
 
     /* Properly handle overlapping blits */
     if (src < dst) {
-        overlap = (dst < (src + h*srcskip));
+        overlap = (SDL_bool)(dst < (src + h*srcskip));
     } else {
-        overlap = (src < (dst + h*dstskip));
+        overlap = (SDL_bool)(src < (dst + h*dstskip));
     }
     if (overlap) {
         if ( dst < src ) {

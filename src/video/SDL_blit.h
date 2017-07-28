@@ -52,6 +52,10 @@ extern Uint8* SDL_expand_byte[9];
 #define SDL_CPU_ALTIVEC_PREFETCH    0x00000010
 #define SDL_CPU_ALTIVEC_NOPREFETCH  0x00000020
 
+#define NO_ALPHA 1
+#define SET_ALPHA 2
+#define COPY_ALPHA 4
+
 typedef struct
 {
     Uint8 *src;

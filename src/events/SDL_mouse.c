@@ -641,7 +641,7 @@ SDL_CaptureMouse(SDL_bool enabled)
 
     focusWindow = SDL_GetKeyboardFocus();
 
-    isCaptured = focusWindow && (focusWindow->flags & SDL_WINDOW_MOUSE_CAPTURE);
+    isCaptured = (SDL_bool)(focusWindow && (focusWindow->flags & SDL_WINDOW_MOUSE_CAPTURE));
     if (isCaptured == enabled) {
         return 0;  /* already done! */
     }

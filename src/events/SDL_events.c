@@ -344,13 +344,13 @@ SDL_PeepEvents(SDL_Event * events, int numevents, SDL_eventaction action,
 SDL_bool
 SDL_HasEvent(Uint32 type)
 {
-    return (SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, type, type) > 0);
+    return (SDL_bool)(SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, type, type) > 0);
 }
 
 SDL_bool
 SDL_HasEvents(Uint32 minType, Uint32 maxType)
 {
-    return (SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, minType, maxType) > 0);
+    return (SDL_bool)(SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, minType, maxType) > 0);
 }
 
 void

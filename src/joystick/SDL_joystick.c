@@ -150,7 +150,7 @@ SDL_JoystickOpen(int device_index)
             (joystick->nhats * sizeof(Uint8));
     }
     if (joystick->nballs > 0) {
-        joystick->balls = (struct balldelta *) SDL_malloc
+        joystick->balls = (_SDL_Joystick::balldelta*)(struct balldelta *) SDL_malloc
             (joystick->nballs * sizeof(*joystick->balls));
     }
     if (joystick->nbuttons > 0) {

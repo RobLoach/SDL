@@ -122,7 +122,7 @@ SDL_IntersectRect(const SDL_Rect * A, const SDL_Rect * B, SDL_Rect * result)
         Amax = Bmax;
     result->h = Amax - Amin;
 
-    return !SDL_RectEmpty(result);
+    return (SDL_bool)(!SDL_RectEmpty(result));
 }
 
 void

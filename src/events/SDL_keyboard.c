@@ -564,14 +564,14 @@ void
 SDL_ResetKeyboard(void)
 {
     SDL_Keyboard *keyboard = &SDL_keyboard;
-    SDL_Scancode scancode;
+    int scancode;
 
 #ifdef DEBUG_KEYBOARD
     printf("Resetting keyboard\n");
 #endif
     for (scancode = 0; scancode < SDL_NUM_SCANCODES; ++scancode) {
         if (keyboard->keystate[scancode] == SDL_PRESSED) {
-            SDL_SendKeyboardKey(SDL_RELEASED, scancode);
+            SDL_SendKeyboardKey(SDL_RELEASED, (SDL_Scancode)scancode);
         }
     }
 }
@@ -875,12 +875,12 @@ SDL_Scancode
 SDL_GetScancodeFromKey(SDL_Keycode key)
 {
     SDL_Keyboard *keyboard = &SDL_keyboard;
-    SDL_Scancode scancode;
+    int scancode;
 
     for (scancode = SDL_SCANCODE_UNKNOWN; scancode < SDL_NUM_SCANCODES;
          ++scancode) {
         if (keyboard->keymap[scancode] == key) {
-            return scancode;
+            return (SDL_Scancode)scancode;
         }
     }
     return SDL_SCANCODE_UNKNOWN;

@@ -1023,13 +1023,14 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
             SDL_bool done = SDL_FALSE;
             long count = 0;
             int radix = 10;
-            enum
+            /*enum
             {
-                DO_SHORT,
-                DO_INT,
-                DO_LONG,
-                DO_LONGLONG
-            } inttype = DO_INT;
+                DO_SHORT, //-1
+                DO_INT, //0
+                DO_LONG, // 1
+                DO_LONGLONG // 2
+            } inttype = 0;*/
+            int inttype = 0;
             SDL_bool suppress = SDL_FALSE;
 
             ++fmt;
@@ -1076,19 +1077,19 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
                     suppress = SDL_TRUE;
                     break;
                 case 'h':
-                    if (inttype > DO_SHORT) {
+                    if (inttype > -1) {
                         ++inttype;
                     }
                     break;
                 case 'l':
-                    if (inttype < DO_LONGLONG) {
+                    if (inttype < 2) {
                         ++inttype;
                     }
                     break;
                 case 'I':
                     if (SDL_strncmp(fmt, "I64", 3) == 0) {
                         fmt += 2;
-                        inttype = DO_LONGLONG;
+                        inttype = 2;
                     }
                     break;
                 case 'i':
@@ -1107,7 +1108,7 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
                     }
                     /* Fall through to %d handling */
                 case 'd':
-                    if (inttype == DO_LONGLONG) {
+                    if (inttype == 2) {
                         Sint64 value;
                         text += SDL_ScanLongLong(text, radix, &value);
                         if (!suppress) {
@@ -1120,25 +1121,25 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
                         text += SDL_ScanLong(text, radix, &value);
                         if (!suppress) {
                             switch (inttype) {
-                            case DO_SHORT:
+                            case -1:
                                 {
                                     short *valuep = va_arg(ap, short *);
                                     *valuep = (short) value;
                                 }
                                 break;
-                            case DO_INT:
+                            case 0:
                                 {
                                     int *valuep = va_arg(ap, int *);
                                     *valuep = (int) value;
                                 }
                                 break;
-                            case DO_LONG:
+                            case 1:
                                 {
                                     long *valuep = va_arg(ap, long *);
                                     *valuep = value;
                                 }
                                 break;
-                            case DO_LONGLONG:
+                            case 2:
                                 /* Handled above */
                                 break;
                             }
@@ -1159,7 +1160,7 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
                     }
                     /* Fall through to unsigned handling */
                 case 'u':
-                    if (inttype == DO_LONGLONG) {
+                    if (inttype == 2) {
                         Uint64 value;
                         text += SDL_ScanUnsignedLongLong(text, radix, &value);
                         if (!suppress) {
@@ -1172,25 +1173,25 @@ SDL_vsscanf(const char *text, const char *fmt, va_list ap)
                         text += SDL_ScanUnsignedLong(text, radix, &value);
                         if (!suppress) {
                             switch (inttype) {
-                            case DO_SHORT:
+                            case -1:
                                 {
                                     short *valuep = va_arg(ap, short *);
                                     *valuep = (short) value;
                                 }
                                 break;
-                            case DO_INT:
+                            case 0:
                                 {
                                     int *valuep = va_arg(ap, int *);
                                     *valuep = (int) value;
                                 }
                                 break;
-                            case DO_LONG:
+                            case 1:
                                 {
                                     long *valuep = va_arg(ap, long *);
                                     *valuep = value;
                                 }
                                 break;
-                            case DO_LONGLONG:
+                            case 2:
                                 /* Handled above */
                                 break;
                             }
@@ -1494,12 +1495,13 @@ SDL_vsnprintf(SDL_OUT_Z_CAP(maxlen) char *text, size_t maxlen, const char *fmt, 
             size_t len = 0;
             SDL_bool check_flag;
             SDL_FormatInfo info;
-            enum
+            /*enum
             {
                 DO_INT,
                 DO_LONG,
                 DO_LONGLONG
-            } inttype = DO_INT;
+            } inttype = DO_INT;*/
+            int inttype = 0;
 
             SDL_zero(info);
             info.radix = 10;
@@ -1561,28 +1563,28 @@ SDL_vsnprintf(SDL_OUT_Z_CAP(maxlen) char *text, size_t maxlen, const char *fmt, 
                     /* short is promoted to int when passed through (...) */
                     break;
                 case 'l':
-                    if (inttype < DO_LONGLONG) {
+                    if (inttype < 2) {
                         ++inttype;
                     }
                     break;
                 case 'I':
                     if (SDL_strncmp(fmt, "I64", 3) == 0) {
                         fmt += 2;
-                        inttype = DO_LONGLONG;
+                        inttype = 2;
                     }
                     break;
                 case 'i':
                 case 'd':
                     switch (inttype) {
-                    case DO_INT:
+                    case 0:
                         len = SDL_PrintLong(text, left, &info,
                                             (long) va_arg(ap, int));
                         break;
-                    case DO_LONG:
+                    case 1:
                         len = SDL_PrintLong(text, left, &info,
                                             va_arg(ap, long));
                         break;
-                    case DO_LONGLONG:
+                    case 2:
                         len = SDL_PrintLongLong(text, left, &info,
                                                 va_arg(ap, Sint64));
                         break;
@@ -1601,7 +1603,7 @@ SDL_vsnprintf(SDL_OUT_Z_CAP(maxlen) char *text, size_t maxlen, const char *fmt, 
                         info.radix = 16;
                     }
                     if (*fmt == 'p') {
-                        inttype = DO_LONG;
+                        inttype = 1;
                     }
                     /* Fall through to unsigned handling */
                 case 'o':
@@ -1612,16 +1614,16 @@ SDL_vsnprintf(SDL_OUT_Z_CAP(maxlen) char *text, size_t maxlen, const char *fmt, 
                 case 'u':
                     info.pad_zeroes = SDL_TRUE;
                     switch (inttype) {
-                    case DO_INT:
+                    case 0:
                         len = SDL_PrintUnsignedLong(text, left, &info,
                                                     (unsigned long)
                                                     va_arg(ap, unsigned int));
                         break;
-                    case DO_LONG:
+                    case 1:
                         len = SDL_PrintUnsignedLong(text, left, &info,
                                                     va_arg(ap, unsigned long));
                         break;
-                    case DO_LONGLONG:
+                    case 2:
                         len = SDL_PrintUnsignedLongLong(text, left, &info,
                                                         va_arg(ap, Uint64));
                         break;

@@ -2417,7 +2417,7 @@ SDL_GetWindowGrab(SDL_Window * window)
 {
     CHECK_WINDOW_MAGIC(window, SDL_FALSE);
     SDL_assert(!_this->grabbed_window || ((_this->grabbed_window->flags & SDL_WINDOW_INPUT_GRABBED) != 0));
-    return window == _this->grabbed_window;
+    return (SDL_bool)(window == _this->grabbed_window);
 }
 
 SDL_Window *
@@ -2780,7 +2780,7 @@ SDL_GL_UnloadLibrary(void)
 static SDL_INLINE SDL_bool
 isAtLeastGL3(const char *verstr)
 {
-    return (verstr && (SDL_atoi(verstr) >= 3));
+    return (SDL_bool)(verstr && (SDL_atoi(verstr) >= 3));
 }
 
 SDL_bool
@@ -3548,7 +3548,7 @@ SDL_StartTextInput(void)
 SDL_bool
 SDL_IsTextInputActive(void)
 {
-    return (SDL_GetEventState(SDL_TEXTINPUT) == SDL_ENABLE);
+    return (SDL_bool)(SDL_GetEventState(SDL_TEXTINPUT) == SDL_ENABLE);
 }
 
 void
@@ -3631,7 +3631,7 @@ SDL_UNUSED static SDL_bool SDL_MessageboxValidForDriver(const SDL_MessageBoxData
     if (!SDL_GetWindowWMInfo(window, &info)) {
         return SDL_TRUE;
     } else {
-        return (info.subsystem == drivertype);
+        return (SDL_bool)(info.subsystem == drivertype);
     }
 }
 
@@ -3650,7 +3650,7 @@ SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid)
     }
 
     current_window = SDL_GetKeyboardFocus();
-    mouse_captured = current_window && ((SDL_GetWindowFlags(current_window) & SDL_WINDOW_MOUSE_CAPTURE) != 0);
+    mouse_captured = (SDL_bool)(current_window && ((SDL_GetWindowFlags(current_window) & SDL_WINDOW_MOUSE_CAPTURE) != 0));
     relative_mode = SDL_GetRelativeMouseMode();
     SDL_CaptureMouse(SDL_FALSE);
     SDL_SetRelativeMouseMode(SDL_FALSE);
@@ -3770,8 +3770,8 @@ SDL_SetWindowHitTest(SDL_Window * window, SDL_HitTest callback, void *userdata)
 
     if (!_this->SetWindowHitTest) {
         return SDL_Unsupported();
-    } else if (_this->SetWindowHitTest(window, callback != NULL) == -1) {
-        return -1;
+    //} else if (_this->SetWindowHitTest(window, callback != NULL) == -1) {
+    //    return -1;
     }
 
     window->hit_test = callback;

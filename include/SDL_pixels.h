@@ -152,7 +152,7 @@ enum
       (SDL_PIXELTYPE(format) == SDL_PIXELTYPE_ARRAYF32)))
 
 #define SDL_ISPIXELFORMAT_ALPHA(format)   \
-    ((SDL_ISPIXELFORMAT_PACKED(format) && \
+    (SDL_bool)((SDL_ISPIXELFORMAT_PACKED(format) && \
      ((SDL_PIXELORDER(format) == SDL_PACKEDORDER_ARGB) || \
       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_RGBA) || \
       (SDL_PIXELORDER(format) == SDL_PACKEDORDER_ABGR) || \
