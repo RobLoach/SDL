@@ -31,7 +31,7 @@ endif
 
 
 CORE_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-TARGET_NAME := skeleton
+TARGET_NAME := sdl2_libretro_test
 LIBM		    = -lm
 
 ifeq ($(ARCHFLAGS),)
