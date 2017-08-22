@@ -4,5 +4,5 @@ SOURCES_C := $(shell find $(SDL_DIR)/src -name '*.c')
 
 INCLUDES += -I$(SDL_DIR)/include
 
-CFLAGS += -fpermissive -Wsign-compare
-CXXFLAGS += -fpermissive -Wsign-compare
+CFLAGS += -Wsign-compare
+CXXFLAGS += -Wsign-compare

@@ -130,7 +130,7 @@ else
 endif
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) $(INCLUDES) $(fpic) -c -o $@ $<
+	$(CC) $(CXXFLAGS) $(INCLUDES) $(fpic) -c -o $@ $<
 
 clean:
 	rm -f $(OBJECTS) $(TARGET)
